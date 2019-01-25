@@ -182,8 +182,13 @@ class ChargeDesk_Request {
 	 * @param string $prefix Name to prefix encoded parameters with
 	 * @return string Encoded payload parameters
 	 */
-    public function _encode($arr, $prefix=null)
+    public function _encode($arr)
     {
+    	foreach($arr as &$item) {
+    		if((is_array($item) || is_null($item)) && !$item) {
+				$item = ""; // http_build_query removes null and empty arrays
+			}
+		}
         return http_build_query($arr);
     }
 }
